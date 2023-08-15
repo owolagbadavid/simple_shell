@@ -20,7 +20,7 @@ void sheller(shell_dt *data)
 				continue;
 
 			/**
-			if (check_syntax_error(datash, input) == 1)
+			if (check_syntax(data, input) == 1)
 			{
 				data->stat = 2;
 				free(input);
@@ -29,7 +29,7 @@ void sheller(shell_dt *data)
 			**/
 			input = vars_sub(input, data);
 			/*
-			loop = split_commands(data, buf);
+			cond = run_cmds(data, input);
 			*/
 			data->count += 1;
 			free(input);
