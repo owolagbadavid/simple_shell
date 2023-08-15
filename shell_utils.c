@@ -52,6 +52,7 @@ char *vars_sub(char *input, shell_dt *data)
  *
  * @head: head of linked list
  * @input: input
+ * @status: shell status
  * @data: shell data
  *
  * Return: int
