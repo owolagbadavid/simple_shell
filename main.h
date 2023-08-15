@@ -10,9 +10,59 @@
 #include <signal.h>
 #include <limits.h>
 #include <stdio.h>
+extern char **environ;
 void handle_sig(int sig);
-int char_check(char *str, const char *delim);
-char *_strtok(char *str, const char *delim);
+int char_check(char str[], const char *delim);
+char *_strtok(char str[], const char *delim);
 int _strlen(const char *);
-void sheller(void);
+
+/**
+ * struct shell_d - shell data
+ * @av: argv
+ * @input: user input
+ * @args: tokens
+ * @count: lines
+ * @_env: env var
+ * @pid: pid of shell
+ * @stat: shell status
+ */
+typedef struct shell_d
+{
+	char **av;
+	char *input;
+	char **args;
+	int count;
+	char **_env;
+	char *pid;
+	int stat;
+} shell_dt;
+void sheller(shell_dt *);
+void data_init(shell_dt *, char **);
+void data_deinit(shell_dt *);
+char *_strdup(char *);
+char *_itoa(int);
+int count_digits(int);
+char *remove_comments(char *);
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+char *std_in(int *);
+/**
+ * struct var_list - linked list for vars
+ * @val: value
+ * @var_len: var length
+ * @val_len: val length
+ * @next: next
+ */
+typedef struct var_list
+{
+	char *val;
+	int var_len;
+	int val_len;
+	struct var_list *next;
+} var_listt;
+int vars_check(var_listt **head, char *input, char *status, shell_dt *data);
+char *vars_sub(char *input, shell_dt *data);
+void check_env(var_listt **head, char *input, shell_dt *data);
+char *var_val_sub(var_listt **head, char *input, char *replc_str, int new_len);
+var_listt *add_var_list_node(var_listt **head, int var_len, char *val, int val_len);
+void free_var_list(var_listt **head);
 #endif

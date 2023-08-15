@@ -2,20 +2,91 @@
 
 /**
  * sheller - handles std
- *
- *
- *
+ * @data: shell data
  */
-void sheller(void)
+void sheller(shell_dt *data)
 {
-	int cond = 1;
-	size_t n = 0;
-	char *buf = NULL;
+	int result, cond = 1;
+	char *input = NULL;
 
 	while (cond)
 	{
 		write(1, "$ ", 2);
-		getline(&buf, &n, stdin);
-		write(1, buf, n);
+		input = std_in(&result);
+		if (result != -1)
+		{
+			input = remove_comments(input);
+			if (input == NULL)
+				continue;
+
+			/**
+			if (check_syntax_error(datash, input) == 1)
+			{
+				data->stat = 2;
+				free(input);
+				continue;
+			}
+			**/
+			input = vars_sub(input, data);
+			/*
+			loop = split_commands(data, buf);
+			*/
+			data->count += 1;
+			free(input);
+		}
+		else
+		{
+			cond = 0;
+			free(input);
+		}
 	}
+}
+
+/**
+ * std_in - reads stdin
+ *
+ * @result: result of getline
+ * Return: input
+ */
+char *std_in(int *result)
+{
+	char *input = NULL;
+	size_t size = 0;
+
+	*result = getline(&input, &size, stdin);
+	return (input);
+}
+
+/**
+ * remove_comments - removes comments
+ *
+ * @input: str
+ * Return: str
+ */
+char *remove_comments(char *input)
+{
+	int i, count = 0;
+
+	for (i = 0; input[i]; i++)
+	{
+		if (input[i] == '#')
+		{
+			if (i == 0)
+			{
+				free(input);
+				return (NULL);
+			}
+
+			if (input[i - 1] == ' ' || input[i - 1] == ';' || input[i - 1] == '\t')
+				count = i;
+		}
+	}
+
+	if (count != 0)
+	{
+		input = _realloc(input, i, count + 1);
+		input[count] = '\0';
+	}
+
+	return (input);
 }
