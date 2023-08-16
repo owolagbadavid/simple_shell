@@ -65,4 +65,11 @@ void check_env(var_listt **head, char *input, shell_dt *data);
 char *var_val_sub(var_listt **head, char *input, char *replc_str, int new_len);
 var_listt *add_var_list_node(var_listt **head, int var_len, char *val, int val_len);
 void free_var_list(var_listt **head);
+int find_char_recur(char *input, int i);
+int check_syntax(shell_dt *data, char *input);
+int check_first_char(char *input, int *index);
+void print_error(shell_dt *data, char *input, int i, int is_before);
+char *_strcat(char *dest, char *src);
+char *_strcpy(char *dest, char *src);
+int find_err(char *input, int i, char prev);
 #endif

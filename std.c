@@ -19,14 +19,12 @@ void sheller(shell_dt *data)
 			if (input == NULL)
 				continue;
 
-			/**
 			if (check_syntax(data, input) == 1)
 			{
 				data->stat = 2;
 				free(input);
 				continue;
 			}
-			**/
 			input = vars_sub(input, data);
 			/*
 			cond = run_cmds(data, input);
