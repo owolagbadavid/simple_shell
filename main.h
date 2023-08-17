@@ -11,6 +11,10 @@
 #include <limits.h>
 #include <stdio.h>
 extern char **environ;
+#define BUFSIZE 1024
+#define TOKEN_BUF 128
+#define TOKEN_DELIM " \n\t\r\a"
+
 void handle_sig(int sig);
 int char_check(char str[], const char *delim);
 char *_strtok(char str[], const char *delim);
@@ -63,7 +67,8 @@ int vars_check(var_listt **head, char *input, char *status, shell_dt *data);
 char *vars_sub(char *input, shell_dt *data);
 void check_env(var_listt **head, char *input, shell_dt *data);
 char *var_val_sub(var_listt **head, char *input, char *replc_str, int new_len);
-var_listt *add_var_list_node(var_listt **head, int var_len, char *val, int val_len);
+var_listt *add_var_list_node(var_listt **head, int var_len,
+		char *val, int val_len);
 void free_var_list(var_listt **head);
 int find_char_recur(char *input, int i);
 int check_syntax(shell_dt *data, char *input);
@@ -114,7 +119,35 @@ typedef struct builtin_c
 	char *name;
 	int (*func)(shell_dt *data);
 } builtin_ct;
-#define BUFSIZE 1024
-#define TOKEN_BUF 128
-#define TOKEN_DELIM " \n\t\r\a"
+int exec_cmd(shell_dt *data);
+int _strcmp(char *s1, char *s2);
+int (*get_builtin(char *cmd))(shell_dt *);
+int _cd(shell_dt *data);
+void cd_rel(shell_dt *data);
+void rev_string(char *s);
+void cd_to(shell_dt *data);
+void cd_home(shell_dt *data);
+void cd_prev(shell_dt *data);
+void set_env(char *key, char *val, shell_dt *data);
+char *copy_info(char *key, char *val);
+char *_getenv(const char *key, char **_env);
+int cmp_env_key(const char *env_key, const char *key);
+char *_cd_err(shell_dt *data);
+char *strcat_err_cd(shell_dt *data, char *msg, char *error, char *count);
+char *not_found_err(shell_dt *data);
+char *exit_shell_err(shell_dt *data);
+int print_error2(shell_dt *data, int e_val);
+char *path_err(shell_dt *data);
+char *env_err(shell_dt *data);
+int check_error_cmd(char *dir, shell_dt *data);
+int is_cur_dir(char *path, int *i);
+char *_which(char *cmd, char **_env);
+int is_executable(shell_dt *data);
+int exec_ext(shell_dt *data);
+int _exit_s(shell_dt *data);
+int _atoi(char *s);
+int _isint(const char *s);
+int _env(shell_dt *data);
+int _setenv(shell_dt *data);
+int _unsetenv(shell_dt *data);
 #endif

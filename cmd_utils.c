@@ -25,13 +25,13 @@ int run_cmds(shell_dt *data, char *input)
 	{
 		data->input = line_temp->line;
 		data->args = split_cmd(data->input);
-		cond = exec_line(data);
+		cond = exec_cmd(data);
 		free(data->args);
 
 		if (cond == 0)
 			break;
 
-		next_node(&sep_head, &line_temp, data);
+		next_node(&sep_temp, &line_temp, data);
 
 		if (line_temp != NULL)
 			line_temp = line_temp->next;
@@ -83,4 +83,104 @@ char **split_cmd(char *input)
 	}
 
 	return (tokens);
+}
+
+/**
+ * exec_cmd - handles execute
+ *
+ * @data: shell data
+ * Return: int
+ */
+int exec_cmd(shell_dt *data)
+{
+	int (*builtin)(shell_dt *data);
+
+	if (data->args[0] == NULL)
+		return (1);
+
+	builtin = get_builtin(data->args[0]);
+
+	if (builtin != NULL)
+		return (builtin(data));
+
+	return (exec_ext(data));
+}
+
+/**
+ * get_builtin - builtin func
+ * @cmd: command
+ * Return: func
+ */
+int (*get_builtin(char *cmd))(shell_dt *)
+{
+	builtin_ct builtin[] = {
+		{ "cd", _cd },
+		{ "exit", _exit_s},
+		{ "env", _env },
+		{ "setenv", _setenv },
+		{ "unsetenv", _unsetenv },
+		/*
+		{ "help", _help },
+		*/
+		{ NULL, NULL }
+	};
+	int i;
+
+	for (i = 0; builtin[i].name; i++)
+	{
+		if (_strcmp(builtin[i].name, cmd) == 0)
+			break;
+	}
+
+	return (builtin[i].func);
+}
+
+/**
+ * exec_ext - execute cmd
+ *
+ * @data: shell data
+ * Return: int
+ */
+int exec_ext(shell_dt *data)
+{
+	pid_t pd;
+	pid_t wpd;
+	int state;
+	int exec;
+	char *dir;
+	(void) wpd;
+
+	exec = is_executable(data);
+	if (exec == -1)
+		return (1);
+	if (exec == 0)
+	{
+		dir = _which(data->args[0], data->_env);
+		if (check_error_cmd(dir, data) == 1)
+			return (1);
+	}
+
+	pd = fork();
+	if (pd == 0)
+	{
+		if (exec == 0)
+			dir = _which(data->args[0], data->_env);
+		else
+			dir = data->args[0];
+		execve(dir + exec, data->args, data->_env);
+	}
+	else if (pd < 0)
+	{
+		perror(data->av[0]);
+		return (1);
+	}
+	else
+	{
+		do {
+			wpd = waitpid(pd, &state, WUNTRACED);
+		} while (!WIFEXITED(state) && !WIFSIGNALED(state));
+	}
+
+	data->stat = state / 256;
+	return (1);
 }
