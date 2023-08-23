@@ -116,7 +116,7 @@ int (*get_builtin(char *cmd))(shell_dt *)
 	builtin_ct builtin[] = {
 		{ "cd", _cd },
 		{ "exit", _exit_s},
-		{ "env", _env },
+		/*{ "env", _env },*/
 		{ "setenv", _setenv },
 		{ "unsetenv", _unsetenv },
 		{ "help", _help },

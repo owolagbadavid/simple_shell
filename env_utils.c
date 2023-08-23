@@ -100,27 +100,3 @@ int cmp_env_key(const char *env_key, const char *key)
 
 	return (i + 1);
 }
-
-/**
- * _env - prints env vars
- *
- * @data: shell data
- * Return: int
- */
-int _env(shell_dt *data)
-{
-	int i, j;
-
-	for (i = 0; data->_env[i]; i++)
-	{
-
-		for (j = 0; data->_env[i][j]; j++)
-			;
-
-		write(STDOUT_FILENO, data->_env[i], j);
-		write(STDOUT_FILENO, "\n", 1);
-	}
-	data->stat = 0;
-
-	return (1);
-}

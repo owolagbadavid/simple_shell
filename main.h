@@ -147,7 +147,6 @@ int exec_ext(shell_dt *data);
 int _exit_s(shell_dt *data);
 int _atoi(char *s);
 int _isint(const char *s);
-int _env(shell_dt *data);
 int _setenv(shell_dt *data);
 int _unsetenv(shell_dt *data);
 int _help(shell_dt *data);
