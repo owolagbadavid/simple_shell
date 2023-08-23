@@ -11,10 +11,17 @@ void sheller(shell_dt *data)
 
 	while (cond)
 	{
-		write(1, "$ ", 2);
+		if (isatty(STDIN_FILENO))
+			write(1, "$ ", 2);
 		input = std_in(&result);
 		if (result != -1)
 		{
+			if (is_empty(input))
+			{
+				write(1, "\n", 1);
+				free(input);
+				continue;
+			}
 			input = remove_comments(input);
 			if (input == NULL)
 				continue;
@@ -86,3 +93,15 @@ char *remove_comments(char *input)
 
 	return (input);
 }
+
+int is_empty(char *str)
+{
+	while (*str != '\0')
+	{
+		if (*str != ' ')
+			return (0);
+		str++;
+	}
+	return (1);
+}
+

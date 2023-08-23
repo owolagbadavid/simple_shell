@@ -158,4 +158,6 @@ void _help_gen(void);
 void _help_alias(void);
 void _help_cd(void);
 void _help_help(void);
+int is_empty(char *str);
+int _env(shell_dt *data);
 #endif
