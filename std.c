@@ -93,7 +93,11 @@ char *remove_comments(char *input)
 
 	return (input);
 }
-
+/**
+ * is_empty - is empyt?
+ * @str: string
+ * Return: int
+ */
 int is_empty(char *str)
 {
 	while (*str != '\0')
