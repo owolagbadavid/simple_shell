@@ -150,4 +150,13 @@ int _isint(const char *s);
 int _env(shell_dt *data);
 int _setenv(shell_dt *data);
 int _unsetenv(shell_dt *data);
+int _help(shell_dt *data);
+void _help_exit(void);
+void _help_unsetenv(void);
+void _help_env(void);
+void _help_setenv(void);
+void _help_gen(void);
+void _help_alias(void);
+void _help_cd(void);
+void _help_help(void);
 #endif

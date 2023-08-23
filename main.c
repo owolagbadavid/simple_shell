@@ -12,7 +12,7 @@ int main(int __attribute__((__unused__)) ac, char **av)
 {
 	shell_dt data;
 
-	signal(SIGINT, handle_sig);
+	/*signal(SIGINT, handle_sig);*/
 	data_init(&data, av);
 	sheller(&data);
 	data_deinit(&data);

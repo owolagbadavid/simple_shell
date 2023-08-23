@@ -119,9 +119,7 @@ int (*get_builtin(char *cmd))(shell_dt *)
 		{ "env", _env },
 		{ "setenv", _setenv },
 		{ "unsetenv", _unsetenv },
-		/*
 		{ "help", _help },
-		*/
 		{ NULL, NULL }
 	};
 	int i;
